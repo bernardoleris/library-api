@@ -17,11 +17,11 @@ public class Emprestimo {
     private long idEmprestimo;
 
     @ManyToOne()
-    @JoinColumn(name = "idLivros")
+    @JoinColumn(name = "idLivro", referencedColumnName = "idLivro")
     private Livro livro;
 
     @ManyToOne()
-    @JoinColumn(name = "idPessoa")
+    @JoinColumn(name = "idPessoa", referencedColumnName = "idPessoa")
     private Pessoa pessoa;
 
     @Column(name = "dataEmprestimo")
@@ -33,9 +33,9 @@ public class Emprestimo {
     @Column(name = "status")
     private String status;
     @Builder
-    public Emprestimo(EmprestimoRequestDTO emprestimoRequestDTO){
-        this.livro = emprestimoRequestDTO.livro();
-        this.pessoa = emprestimoRequestDTO.pessoa();
+    public Emprestimo(EmprestimoRequestDTO emprestimoRequestDTO, Livro livro, Pessoa pessoa){
+        this.livro = livro;
+        this.pessoa = pessoa;
         this.dataEmprestimo = emprestimoRequestDTO.dataEmprestimo();
         this.dataDevolucao = emprestimoRequestDTO.dataDevolucao();
         this.status = emprestimoRequestDTO.status();

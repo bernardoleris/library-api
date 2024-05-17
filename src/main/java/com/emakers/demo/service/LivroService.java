@@ -2,7 +2,6 @@ package com.emakers.demo.service;
 
 import com.emakers.demo.data.dto.request.LivroRequestDTO;
 import com.emakers.demo.data.dto.response.LivroResponseDTO;
-import com.emakers.demo.data.dto.response.LivroResponseDTO;
 import com.emakers.demo.data.entity.Livro;
 import com.emakers.demo.repository.LivroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +38,7 @@ public class LivroService {
         Livro livro = getLivroEntityById(idLivro);
         livro.setAutor(livroRequestDTO.autor());
         livro.setNome(livroRequestDTO.nome());
-        livro.setDataLancamento(livroRequestDTO.datalancamento());
+        livro.setDataLancamento(livroRequestDTO.dataLancamento());
         livroRepository.save(livro);
 
         return new LivroResponseDTO(livro);

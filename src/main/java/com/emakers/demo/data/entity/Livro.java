@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import java.time.LocalDate;
 
 @Getter
@@ -31,6 +32,6 @@ public class Livro {
     public Livro(LivroRequestDTO livroRequestDTO){
         this.nome = livroRequestDTO.nome();
         this.autor = livroRequestDTO.autor();
-        this.dataLancamento = livroRequestDTO.datalancamento();
+        this.dataLancamento = livroRequestDTO.dataLancamento();
     }
 }

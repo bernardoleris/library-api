@@ -3,6 +3,7 @@ package com.emakers.demo.service;
 import com.emakers.demo.data.dto.request.LivroRequestDTO;
 import com.emakers.demo.data.dto.response.LivroResponseDTO;
 import com.emakers.demo.data.entity.Livro;
+import com.emakers.demo.exceptions.general.EntityNotFoundException;
 import com.emakers.demo.repository.LivroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,6 +53,6 @@ public class LivroService {
     }
 
     private Livro getLivroEntityById(Long idLivro){
-        return livroRepository.findById(idLivro).orElseThrow(()-> new RuntimeException("Livro was not find"));
+        return livroRepository.findById(idLivro).orElseThrow(()-> new EntityNotFoundException(idLivro));
     }
 }

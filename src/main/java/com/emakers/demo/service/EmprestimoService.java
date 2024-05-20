@@ -5,11 +5,14 @@ import com.emakers.demo.data.dto.response.EmprestimoResponseDTO;
 import com.emakers.demo.data.entity.Emprestimo;
 import com.emakers.demo.data.entity.Livro;
 import com.emakers.demo.data.entity.Pessoa;
+import com.emakers.demo.exceptions.general.EntityNotFoundException;
 import com.emakers.demo.repository.EmprestimoRepository;
 import com.emakers.demo.repository.LivroRepository;
 import com.emakers.demo.repository.PessoaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,30 +40,19 @@ public class EmprestimoService {
     }
 
     public EmprestimoResponseDTO createEmprestimo(EmprestimoRequestDTO emprestimoRequestDTO) {
-        // Buscar Livro pelo ID
         Livro livro = livroRepository.findById(emprestimoRequestDTO.idLivro()).orElseThrow(()-> new RuntimeException("Livro was not find"));
-
-        // Buscar Pessoa pelo ID
         Pessoa pessoa = pessoaRepository.findById(emprestimoRequestDTO.idPessoa()).orElseThrow(()-> new RuntimeException("Pessoa was not find"));
-
-        // Criar Emprestimo
         Emprestimo emprestimo = new Emprestimo(emprestimoRequestDTO, livro, pessoa);
-        emprestimo.setLivro(livro);
-        emprestimo.setPessoa(pessoa);
-        emprestimo.setDataEmprestimo(emprestimoRequestDTO.dataEmprestimo());
-        emprestimo.setDataDevolucao(emprestimoRequestDTO.dataDevolucao());
-        emprestimo.setStatus(emprestimoRequestDTO.status());
+        emprestimoRepository.save(emprestimo);
 
-        // Salvar Emprestimo
-        Emprestimo emprestimoSalvo = emprestimoRepository.save(emprestimo);
-        return new EmprestimoResponseDTO(emprestimoSalvo);
+        return new EmprestimoResponseDTO(emprestimo);
     }
-
-    public EmprestimoResponseDTO updateEmprestimo(long idEmprestimo, EmprestimoRequestDTO emprestimoRequestDTO){
+    // Método para atualizar o emprestimo, só permite atualizar as datas de emprestimo e devolução.
+    public EmprestimoResponseDTO updateDate(long idEmprestimo, EmprestimoRequestDTO emprestimoRequestDTO){
         Emprestimo emprestimo = getEmprestimoEntityById(idEmprestimo);
         emprestimo.setDataEmprestimo(emprestimoRequestDTO.dataEmprestimo());
         emprestimo.setDataDevolucao(emprestimoRequestDTO.dataDevolucao());
-        emprestimo.setStatus(emprestimoRequestDTO.status());
+        emprestimoRepository.save(emprestimo);
 
         return new EmprestimoResponseDTO(emprestimo);
     }
@@ -73,6 +65,16 @@ public class EmprestimoService {
     }
 
     private Emprestimo getEmprestimoEntityById(Long idEmprestimo){
-        return emprestimoRepository.findById(idEmprestimo).orElseThrow(()-> new RuntimeException("Emprestimo was not find"));
+        return emprestimoRepository.findById(idEmprestimo).orElseThrow(()-> new EntityNotFoundException(idEmprestimo));
+    }
+
+    // Método para atualizar o status do emprestimo para "DEVOLVIDO".
+    public EmprestimoResponseDTO returnedBook(long idEmprestimo){
+        Emprestimo emprestimo = getEmprestimoEntityById(idEmprestimo);
+
+        emprestimo.updateStatus("DEVOLVIDO");
+
+        emprestimoRepository.save(emprestimo);
+        return new EmprestimoResponseDTO(emprestimo);
     }
 }

@@ -4,17 +4,19 @@ import com.emakers.demo.data.dto.request.EmprestimoRequestDTO;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.time.LocalDate;
 
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 @Table(name = "Emprestimo")
 public class Emprestimo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idEmprestimo;
+    private Long idEmprestimo;
 
     @ManyToOne()
     @JoinColumn(name = "idLivro", referencedColumnName = "idLivro")
@@ -38,6 +40,10 @@ public class Emprestimo {
         this.pessoa = pessoa;
         this.dataEmprestimo = emprestimoRequestDTO.dataEmprestimo();
         this.dataDevolucao = emprestimoRequestDTO.dataDevolucao();
-        this.status = emprestimoRequestDTO.status();
+        this.status = "EMPRESTADO";
+    }
+
+    public void updateStatus(String newStatus) {
+        this.status = newStatus;
     }
 }

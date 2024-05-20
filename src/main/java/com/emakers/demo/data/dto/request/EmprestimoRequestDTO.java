@@ -1,28 +1,22 @@
 package com.emakers.demo.data.dto.request;
 
-import com.emakers.demo.data.entity.Livro;
-import com.emakers.demo.data.entity.Pessoa;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 
 public record EmprestimoRequestDTO(
-        @NotNull(message = "idLivro is required")
+        @NotNull(message = "idLivro is required", groups = PostValidation.class)
         Long idLivro,
-        @NotNull(message = "idPessoa is required")
+        @NotNull(message = "idPessoa is required", groups = PostValidation.class)
         Long idPessoa,
-
         @JsonFormat(pattern="dd-MM-yyyy")
-        @NotNull(message = "DataEmprestimo is required")
+        @NotNull(message = "DataEmprestimo is required", groups = PostValidation.class)
         LocalDate dataEmprestimo,
-
         @JsonFormat(pattern="dd-MM-yyyy")
-        @NotNull(message = "DataDevolucao is required")
+        @NotNull(message = "DataDevolucao is required", groups = PostValidation.class)
         LocalDate dataDevolucao,
-
-        @NotNull(message = "Status is required")
         String status
-
 ) {
+        public interface PostValidation {}
 }

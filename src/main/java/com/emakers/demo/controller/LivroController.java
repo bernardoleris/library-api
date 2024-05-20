@@ -3,6 +3,7 @@ package com.emakers.demo.controller;
 import com.emakers.demo.data.dto.request.LivroRequestDTO;
 import com.emakers.demo.data.dto.response.LivroResponseDTO;
 import com.emakers.demo.service.LivroService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,12 +28,12 @@ public class LivroController {
     }
 
     @PostMapping(value = "/create")
-    public ResponseEntity<LivroResponseDTO> createLivro(@RequestBody LivroRequestDTO livroRequestDTO){
+    public ResponseEntity<LivroResponseDTO> createLivro(@Valid  @RequestBody LivroRequestDTO livroRequestDTO){
         return ResponseEntity.status(HttpStatus.OK).body(livroService.createLivro(livroRequestDTO));
     }
 
     @PutMapping(value = "/update/{idLivro}")
-    public ResponseEntity<LivroResponseDTO> updateLivro(@PathVariable long idLivro, @RequestBody LivroRequestDTO livroRequestDTO){
+    public ResponseEntity<LivroResponseDTO> updateLivro(@PathVariable long idLivro, @Valid @RequestBody LivroRequestDTO livroRequestDTO){
         return ResponseEntity.status(HttpStatus.OK).body(livroService.updateLivro(idLivro, livroRequestDTO));
     }
 

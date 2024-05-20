@@ -3,6 +3,7 @@ package com.emakers.demo.controller;
 import com.emakers.demo.data.dto.request.PessoaRequestDTO;
 import com.emakers.demo.data.dto.response.PessoaResponseDTO;
 import com.emakers.demo.service.PessoaService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,12 +28,12 @@ public class PessoaController {
     }
 
     @PostMapping(value = "/create")
-    public ResponseEntity<PessoaResponseDTO> createPessoa(@RequestBody PessoaRequestDTO pessoaRequestDTO){
+    public ResponseEntity<PessoaResponseDTO> createPessoa(@Valid  @RequestBody PessoaRequestDTO pessoaRequestDTO){
         return ResponseEntity.status(HttpStatus.OK).body(pessoaService.createPessoa(pessoaRequestDTO));
     }
 
     @PutMapping(value = "/update/{idPessoa}")
-    public ResponseEntity<PessoaResponseDTO> updatePessoa(@PathVariable long idPessoa, @RequestBody PessoaRequestDTO pessoaRequestDTO){
+    public ResponseEntity<PessoaResponseDTO> updatePessoa(@PathVariable long idPessoa, @Valid @RequestBody PessoaRequestDTO pessoaRequestDTO){
         return ResponseEntity.status(HttpStatus.OK).body(pessoaService.updatePessoa(idPessoa, pessoaRequestDTO));
     }
 

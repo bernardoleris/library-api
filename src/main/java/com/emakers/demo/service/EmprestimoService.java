@@ -56,25 +56,16 @@ public class EmprestimoService {
 
         return new EmprestimoResponseDTO(emprestimo);
     }
-
-    public String deleteEmprestimo(long idEmprestimo){
+    // Método para devolução do livro (É necessário apagar o Emprestimo do banco de dados para que o livro possa ser emprestado para outra pessoa).
+    public String returnEmprestimo(long idEmprestimo){
         Emprestimo emprestimo = getEmprestimoEntityById(idEmprestimo);
         emprestimoRepository.delete(emprestimo);
 
-        return "Emprestimo id:" + idEmprestimo + " deleted!";
+        return "Emprestimo ID:" + idEmprestimo + " returned!";
     }
 
     private Emprestimo getEmprestimoEntityById(Long idEmprestimo){
         return emprestimoRepository.findById(idEmprestimo).orElseThrow(()-> new EntityNotFoundException(idEmprestimo));
     }
 
-    // Método para atualizar o status do emprestimo para "DEVOLVIDO".
-    public EmprestimoResponseDTO returnedBook(long idEmprestimo){
-        Emprestimo emprestimo = getEmprestimoEntityById(idEmprestimo);
-
-        emprestimo.updateStatus("DEVOLVIDO");
-
-        emprestimoRepository.save(emprestimo);
-        return new EmprestimoResponseDTO(emprestimo);
-    }
 }

@@ -38,14 +38,9 @@ public class EmprestimoController {
         return ResponseEntity.status(HttpStatus.OK).body(emprestimoService.updateDate(idEmprestimo, emprestimoRequestDTO));
     }
 
-    @DeleteMapping(value = "/delete/{idEmprestimo}")
-    public ResponseEntity<String> deleteEmprestimo(@PathVariable long idEmprestimo) {
-        return ResponseEntity.status(HttpStatus.OK).body(emprestimoService.deleteEmprestimo(idEmprestimo));
-    }
-
-    @PatchMapping (value = "/returned/{idEmprestimo}")
-    public ResponseEntity<EmprestimoResponseDTO> returnedBook(@PathVariable Long idEmprestimo, @Valid @RequestBody EmprestimoRequestDTO emprestimoRequestDTO) {
-        return ResponseEntity.status(HttpStatus.OK).body(emprestimoService.returnedBook(idEmprestimo));
+    @DeleteMapping(value = "/return/{idEmprestimo}")
+    public ResponseEntity<String> returnEmprestimo(@PathVariable long idEmprestimo) {
+        return ResponseEntity.status(HttpStatus.OK).body(emprestimoService.returnEmprestimo(idEmprestimo));
     }
 }
 

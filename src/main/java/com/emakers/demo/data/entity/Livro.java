@@ -28,10 +28,14 @@ public class Livro {
     @Column(name = "dataLancamento", nullable = false)
     private LocalDate dataLancamento;
 
+    @Column(name = "quantidadeEmprestimos")
+    private int quantidadeEmprestimos;
+
     @Builder
     public Livro(LivroRequestDTO livroRequestDTO){
         this.nome = livroRequestDTO.nome();
         this.autor = livroRequestDTO.autor();
         this.dataLancamento = livroRequestDTO.dataLancamento();
+        this.quantidadeEmprestimos = 0;
     }
 }

@@ -10,7 +10,8 @@ CREATE TABLE IF NOT EXISTS livro (
     id_livro SERIAL PRIMARY KEY,
     nome VARCHAR(45) NOT NULL,
     autor VARCHAR(45) NOT NULL,
-    data_lancamento DATE
+    data_lancamento DATE,
+    quantidade_emprestimos INT NOT NULL DEFAULT 0
 );
 
 -- Create the emprestimo table with the necessary columns and foreign key constraints

@@ -42,8 +42,4 @@ public class Emprestimo {
         this.dataDevolucao = emprestimoRequestDTO.dataDevolucao();
         this.status = "EMPRESTADO";
     }
-
-    public void updateStatus(String newStatus) {
-        this.status = newStatus;
-    }
 }

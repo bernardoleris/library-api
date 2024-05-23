@@ -11,8 +11,6 @@ import com.emakers.demo.repository.LivroRepository;
 import com.emakers.demo.repository.PessoaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,8 +37,11 @@ public class EmprestimoService {
         return new EmprestimoResponseDTO(emprestimo);
     }
 
+    // Quando um empréstimo é criado a quantidade de emprestimos que do livro envolvido é aumentado em 1.
     public EmprestimoResponseDTO createEmprestimo(EmprestimoRequestDTO emprestimoRequestDTO) {
         Livro livro = livroRepository.findById(emprestimoRequestDTO.idLivro()).orElseThrow(()-> new RuntimeException("Livro was not find"));
+        livro.setQuantidadeEmprestimos(livro.getQuantidadeEmprestimos()+1);
+        livroRepository.save(livro);
         Pessoa pessoa = pessoaRepository.findById(emprestimoRequestDTO.idPessoa()).orElseThrow(()-> new RuntimeException("Pessoa was not find"));
         Emprestimo emprestimo = new Emprestimo(emprestimoRequestDTO, livro, pessoa);
         emprestimoRepository.save(emprestimo);

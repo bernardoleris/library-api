@@ -15,8 +15,7 @@ public record EmprestimoRequestDTO(
         LocalDate dataEmprestimo,
         @JsonFormat(pattern="dd-MM-yyyy")
         @NotNull(message = "DataDevolucao is required", groups = PostValidation.class)
-        LocalDate dataDevolucao,
-        String status
+        LocalDate dataDevolucao
 ) {
         public interface PostValidation {}
 }

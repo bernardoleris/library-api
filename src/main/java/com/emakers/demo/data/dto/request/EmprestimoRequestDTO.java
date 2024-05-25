@@ -1,6 +1,7 @@
 package com.emakers.demo.data.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
@@ -11,10 +12,8 @@ public record EmprestimoRequestDTO(
         @NotNull(message = "idPessoa is required", groups = PostValidation.class)
         Long idPessoa,
         @JsonFormat(pattern="dd-MM-yyyy")
-        @NotNull(message = "DataEmprestimo is required", groups = PostValidation.class)
-        LocalDate dataEmprestimo,
-        @JsonFormat(pattern="dd-MM-yyyy")
         @NotNull(message = "DataDevolucao is required", groups = PostValidation.class)
+        @FutureOrPresent(message = "Release date must be in the future or present", groups = PostValidation.class)
         LocalDate dataDevolucao
 ) {
         public interface PostValidation {}

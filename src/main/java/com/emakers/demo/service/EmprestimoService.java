@@ -5,6 +5,7 @@ import com.emakers.demo.data.dto.response.EmprestimoResponseDTO;
 import com.emakers.demo.data.entity.Emprestimo;
 import com.emakers.demo.data.entity.Livro;
 import com.emakers.demo.data.entity.Pessoa;
+import com.emakers.demo.exceptions.general.BookNotAvailableException;
 import com.emakers.demo.exceptions.general.EntityNotFoundException;
 import com.emakers.demo.repository.EmprestimoRepository;
 import com.emakers.demo.repository.LivroRepository;
@@ -39,27 +40,37 @@ public class EmprestimoService {
 
     // Quando um empréstimo é criado a quantidade de emprestimos que do livro envolvido é aumentado em 1.
     public EmprestimoResponseDTO createEmprestimo(EmprestimoRequestDTO emprestimoRequestDTO) {
-        Livro livro = livroRepository.findById(emprestimoRequestDTO.idLivro()).orElseThrow(()-> new RuntimeException("Livro was not find"));
-        livro.setQuantidadeEmprestimos(livro.getQuantidadeEmprestimos()+1);
-        livroRepository.save(livro);
-        Pessoa pessoa = pessoaRepository.findById(emprestimoRequestDTO.idPessoa()).orElseThrow(()-> new RuntimeException("Pessoa was not find"));
-        Emprestimo emprestimo = new Emprestimo(emprestimoRequestDTO, livro, pessoa);
-        emprestimoRepository.save(emprestimo);
+        Livro livro = livroRepository.findById(emprestimoRequestDTO.idLivro()).orElseThrow(() -> new EntityNotFoundException(emprestimoRequestDTO.idLivro()));
 
-        return new EmprestimoResponseDTO(emprestimo);
+        if ("DISPONÍVEL".equals(livro.getStatus())) {
+            livro.setQuantidadeEmprestimos(livro.getQuantidadeEmprestimos() + 1);
+            livro.setStatus("INDISPONÍVEL");
+            livroRepository.save(livro);
+            Pessoa pessoa = pessoaRepository.findById(emprestimoRequestDTO.idPessoa()).orElseThrow(() -> new EntityNotFoundException(emprestimoRequestDTO.idPessoa()));
+            Emprestimo emprestimo = new Emprestimo(emprestimoRequestDTO, livro, pessoa);
+            emprestimoRepository.save(emprestimo);
+
+            return new EmprestimoResponseDTO(emprestimo);
+        } else {
+            throw new BookNotAvailableException("Book with ID: " + emprestimoRequestDTO.idLivro() +" is not available");
+        }
     }
-    // Método para atualizar o emprestimo, só permite atualizar as datas de emprestimo e devolução.
+
+    // Método para atualizar o emprestimo, só permite atualizar a data de devolução.
     public EmprestimoResponseDTO updateDate(long idEmprestimo, EmprestimoRequestDTO emprestimoRequestDTO){
         Emprestimo emprestimo = getEmprestimoEntityById(idEmprestimo);
-        emprestimo.setDataEmprestimo(emprestimoRequestDTO.dataEmprestimo());
         emprestimo.setDataDevolucao(emprestimoRequestDTO.dataDevolucao());
         emprestimoRepository.save(emprestimo);
 
         return new EmprestimoResponseDTO(emprestimo);
     }
-    // Método para devolução do livro (É necessário apagar o Emprestimo do banco de dados para que o livro possa ser emprestado para outra pessoa).
+    // Método para devolução do livro (É necessário apagar o Emprestimo do banco de dados para que
+    // o livro possa ser emprestado para outra pessoa) e mudança do "status" do livro para "disponível"
     public String returnEmprestimo(long idEmprestimo){
         Emprestimo emprestimo = getEmprestimoEntityById(idEmprestimo);
+        Livro livro = emprestimo.getLivro();
+        livro.setStatus("DISPONÍVEL");
+        livroRepository.save(livro);
         emprestimoRepository.delete(emprestimo);
 
         return "Emprestimo ID:" + idEmprestimo + " returned!";

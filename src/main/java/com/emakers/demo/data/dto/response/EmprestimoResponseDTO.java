@@ -14,10 +14,9 @@ public record EmprestimoResponseDTO(
         @JsonFormat(pattern="dd-MM-yyyy")
         LocalDate dataEmprestimo,
         @JsonFormat(pattern="dd-MM-yyyy")
-        LocalDate dataDevolucao,
-        String status
+        LocalDate dataDevolucao
 ) {
     public EmprestimoResponseDTO (Emprestimo emprestimo){
-        this(emprestimo.getIdEmprestimo(),(emprestimo.getLivro()), emprestimo.getPessoa(), emprestimo.getDataEmprestimo(), emprestimo.getDataDevolucao(), emprestimo.getStatus());
+        this(emprestimo.getIdEmprestimo(),(emprestimo.getLivro()), emprestimo.getPessoa(), emprestimo.getDataEmprestimo(), emprestimo.getDataDevolucao());
     }
 }

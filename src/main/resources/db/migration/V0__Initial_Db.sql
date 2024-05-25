@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS livro (
     nome VARCHAR(45) NOT NULL,
     autor VARCHAR(45) NOT NULL,
     data_lancamento DATE,
+    status VARCHAR(45) NOT NULL DEFAULT 'DISPONÍVEL',
     quantidade_emprestimos INT NOT NULL DEFAULT 0
 );
 
@@ -21,7 +22,6 @@ CREATE TABLE IF NOT EXISTS emprestimo (
     id_pessoa INT NOT NULL,
     data_emprestimo DATE,
     data_devolucao DATE,
-    status VARCHAR(45),
     FOREIGN KEY (id_livro) REFERENCES livro(id_livro),
     FOREIGN KEY (id_pessoa) REFERENCES pessoa(id_pessoa)
 );

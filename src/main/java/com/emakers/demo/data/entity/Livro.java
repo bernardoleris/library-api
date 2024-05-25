@@ -28,6 +28,9 @@ public class Livro {
     @Column(name = "dataLancamento", nullable = false)
     private LocalDate dataLancamento;
 
+    @Column(name = "status", nullable = false)
+    private String status;
+
     @Column(name = "quantidadeEmprestimos")
     private int quantidadeEmprestimos;
 
@@ -36,6 +39,7 @@ public class Livro {
         this.nome = livroRequestDTO.nome();
         this.autor = livroRequestDTO.autor();
         this.dataLancamento = livroRequestDTO.dataLancamento();
+        this.status = "DISPONÍVEL";
         this.quantidadeEmprestimos = 0;
     }
 }

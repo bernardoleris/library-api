@@ -31,15 +31,11 @@ public class Emprestimo {
 
     @Column(name = "dataDevolucao")
     private LocalDate dataDevolucao;
-
-    @Column(name = "status")
-    private String status;
     @Builder
     public Emprestimo(EmprestimoRequestDTO emprestimoRequestDTO, Livro livro, Pessoa pessoa){
         this.livro = livro;
         this.pessoa = pessoa;
-        this.dataEmprestimo = emprestimoRequestDTO.dataEmprestimo();
+        this.dataEmprestimo = LocalDate.now();
         this.dataDevolucao = emprestimoRequestDTO.dataDevolucao();
-        this.status = "EMPRESTADO";
     }
 }

@@ -14,15 +14,16 @@ import java.util.Collections;
 import java.util.List;
 
 @ControllerAdvice
-public class GeneralExceptionHandler{
+public class GeneralExceptionHandler {
+
     @ExceptionHandler(EntityNotFoundException.class)
-    private ResponseEntity<RestErrorMessage> entityNotFoundHandler(EntityNotFoundException exception){
+    private ResponseEntity<RestErrorMessage> entityNotFoundHandler(EntityNotFoundException exception) {
         RestErrorMessage errorMessage = new RestErrorMessage(HttpStatus.BAD_REQUEST, exception.getMessage());
         return ResponseEntity.status(errorMessage.status()).body(errorMessage);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    private ResponseEntity<List<RestErrorMessage>> methodArgumentNotValidHandler(MethodArgumentNotValidException exception){
+    private ResponseEntity<List<RestErrorMessage>> methodArgumentNotValidHandler(MethodArgumentNotValidException exception) {
         List<RestErrorMessage> errors = exception.getBindingResult().getFieldErrors()
                 .stream().map(fieldError -> new RestErrorMessage(HttpStatus.BAD_REQUEST, fieldError.getDefaultMessage()))
                 .toList();
@@ -45,6 +46,12 @@ public class GeneralExceptionHandler{
     @ExceptionHandler(MissingServletRequestParameterException.class)
     private ResponseEntity<RestErrorMessage> handleMissingServletRequestParameter(MissingServletRequestParameterException exception) {
         RestErrorMessage errorMessage = new RestErrorMessage(HttpStatus.BAD_REQUEST, "Required parameter is missing: " + exception.getParameterName());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
+    }
+
+    @ExceptionHandler(BookNotAvailableException.class)
+    private ResponseEntity<RestErrorMessage> handleBookNotAvailable(BookNotAvailableException exception) {
+        RestErrorMessage errorMessage = new RestErrorMessage(HttpStatus.BAD_REQUEST, exception.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
     }
 }

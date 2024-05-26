@@ -4,8 +4,10 @@ import com.emakers.demo.data.dto.request.LivroRequestDTO;
 import com.emakers.demo.data.dto.response.LivroResponseDTO;
 import com.emakers.demo.data.entity.Livro;
 import com.emakers.demo.exceptions.general.EntityNotFoundException;
+import com.emakers.demo.exceptions.general.EntityReferencedException;
 import com.emakers.demo.repository.LivroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,10 +48,13 @@ public class LivroService {
     }
 
     public String deleteLivro(Long idLivro){
-        Livro livro = getLivroEntityById(idLivro);
-        livroRepository.delete(livro);
-
-        return "Livro id:" + idLivro + " deleted!";
+        try{
+            Livro livro = getLivroEntityById(idLivro);
+            livroRepository.delete(livro);
+            return "Livro id:" + idLivro + " deleted!";
+        }catch(DataIntegrityViolationException e){
+            throw new EntityReferencedException("Livro with ID " + idLivro + " is referenced by an existing Emprestimo");
+        }
     }
 
     private Livro getLivroEntityById(Long idLivro){

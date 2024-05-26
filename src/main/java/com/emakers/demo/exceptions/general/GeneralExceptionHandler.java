@@ -54,4 +54,10 @@ public class GeneralExceptionHandler {
         RestErrorMessage errorMessage = new RestErrorMessage(HttpStatus.BAD_REQUEST, exception.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
     }
+
+    @ExceptionHandler(EntityReferencedException.class)
+    private ResponseEntity<RestErrorMessage> entityReferencedHandler(EntityReferencedException exception) {
+        RestErrorMessage errorMessage = new RestErrorMessage(HttpStatus.BAD_REQUEST, exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
+    }
 }

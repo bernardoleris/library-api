@@ -4,8 +4,10 @@ import com.emakers.demo.data.dto.request.PessoaRequestDTO;
 import com.emakers.demo.data.dto.response.PessoaResponseDTO;
 import com.emakers.demo.data.entity.Pessoa;
 import com.emakers.demo.exceptions.general.EntityNotFoundException;
+import com.emakers.demo.exceptions.general.EntityReferencedException;
 import com.emakers.demo.repository.PessoaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,9 +45,13 @@ public class PessoaService {
     }
 
     public String deletePessoa(Long idPessoa){
-        Pessoa pessoa = getPessoaEntityById(idPessoa);
-        pessoaRepository.delete(pessoa);
-        return "Pessoa id:" + idPessoa + " deleted!";
+        try{
+            Pessoa pessoa = getPessoaEntityById(idPessoa);
+            pessoaRepository.delete(pessoa);
+            return "Pessoa id:" + idPessoa + " deleted!";
+        }catch (DataIntegrityViolationException e) {
+            throw new EntityReferencedException("Pessoa with ID " + idPessoa + " is referenced by an existing Emprestimo");
+        }
     }
 
     private Pessoa getPessoaEntityById(Long idPessoa){

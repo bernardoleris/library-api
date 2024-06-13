@@ -79,5 +79,4 @@ public class EmprestimoService {
     private Emprestimo getEmprestimoEntityById(Long idEmprestimo){
         return emprestimoRepository.findById(idEmprestimo).orElseThrow(()-> new EntityNotFoundException(idEmprestimo));
     }
-
 }

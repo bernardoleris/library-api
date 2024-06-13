@@ -7,3 +7,8 @@ Rest API for a library, which allows the registration of books, people, and loan
 ## PT-BR:
 ## Descrição:
 API Rest para uma biblioteca, que permite o registro de livros, pessoas e os empréstimos. Foi desenvolvida utilizando Spring Boot, PostgreSQL, Swagger UI para documentação e Postman para testes. Essa aplicação possui todos os métodos necessários e o tratamento de exceções adequados.
+
+## Swagger UI Documentation Images:
+![EntidadePessoa](./swagger-imgs/pessoa.png)
+![EntidadeLivro](./swagger-imgs/livro.png)
+![Entidadeemprestimo](./swagger-imgs/emprestimo.png)
